@@ -1,6 +1,24 @@
+class OutputDouble
+  def messages
+    @messages ||= []
+  end
+  def puts(message)
+    messages << message
+  end
+end
+
+def output_double
+  @output ||= OutputDouble.new
+end
+
 Given /^I am not yet playing$/ do
 end
 
 When /^I start a new game$/ do
-  Codebreaker::Game.new.start
+  game = Codebreaker::Game.new(output_double)
+  game.start
+end
+
+Then /^I should see "([^"]*)"$/ do |message|
+  output_double.messages.should include(message)
 end
